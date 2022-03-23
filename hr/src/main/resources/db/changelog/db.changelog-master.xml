@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+	xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.0.xsd
+		http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+		http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.9.0.xsd">
+	<changeSet id="01" author="Felker David">
+		<createTable tableName="employees">
+			<column name="id" type="int">
+				<constraints primaryKey="true" primaryKeyName="employee_id_pk" />
+			</column>
+			<column name="email" type="varchar(255)">
+				<constraints unique="true" uniqueConstraintName="employee_email_unq" />
+			</column>
+			<column name="password" type="varchar(66)"></column>
+			<column name="full_name" type="varchar(200)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="dep_id" type="int">
+				<constraints nullable="false" foreignKeyName="fk_employee_dep_id" references="departments(id)" />
+			</column>
+			<column name="created_at" type="timestamp"></column>
+			<column name="created_by" type="int"></column>
+			<column name="updated_at" type="timestamp"></column>
+			<column name="updated_by" type="int"></column>
+		</createTable>
+		<createTable tableName="departments">
+			<column name="id" type="int">
+				<constraints primaryKey="true" primaryKeyName="department_id_pk" />
+			</column>
+			<column name="name" type="varchar(100)" /></column>
+			<column name="manager_id" type="int" />
+				<constraints nullable="false" foreignKeyName="fk_department_manager_id" references="employees(id)" />
+			</column>
+			<column name="created_at" type="timestamp"></column>
+			<column name="created_by" type="int"></column>
+			<column name="updated_at" type="timestamp"></column>
+			<column name="updated_by" type="int"></column>
+		</createTable>
+		<addAutoIncrement tableName="employees" columnName="id" columnDataType="int" startWith="1" incrementBy="1" />
+		<addAutoIncrement tableName="departments" columnName="id" columnDataType="int" startWith="1" incrementBy="1" />
+		<createSequence sequenceName="hibernate_sequence" incrementBy="1" startValue="1" />
+	</changeSet>
+</databaseChangeLog>
